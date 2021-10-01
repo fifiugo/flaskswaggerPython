@@ -1,0 +1,156 @@
+basePath: /api
+consumes:
+- application/json
+definitions:
+  Item:
+    properties:
+      name:
+        default: Name of the Item
+        type: string
+      price:
+        default: 0.0
+        type: number
+      store_id:
+        type: integer
+    type: object
+  Store:
+    properties:
+      name:
+        default: Name of the Store
+        type: string
+    type: object
+info:
+  title: Sample Flask-RestPlus 5GMeta
+  version: '0.9'
+paths:
+  /export_yaml/swagger.yml:
+    get:
+      operationId: get_export_yaml
+      responses:
+        '200':
+          description: Success
+      tags:
+      - export_yaml
+  /item/{id}:
+    delete:
+      operationId: delete_item
+      responses:
+        '200':
+          description: Success
+      tags:
+      - item
+    get:
+      operationId: get_item
+      responses:
+        '200':
+          description: Success
+      tags:
+      - item
+    parameters:
+    - in: path
+      name: id
+      required: true
+      type: integer
+    put:
+      operationId: put_item
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Item'
+      responses:
+        '200':
+          description: Success
+      tags:
+      - item
+  /items:
+    get:
+      operationId: Get all the Items
+      responses:
+        '200':
+          description: Success
+      security:
+      - basic: []
+      tags:
+      - items
+    post:
+      operationId: Create an Item
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Item'
+      responses:
+        '200':
+          description: Success
+      tags:
+      - items
+  /store/{id}:
+    delete:
+      operationId: delete_store
+      responses:
+        '200':
+          description: Success
+      tags:
+      - store
+    get:
+      operationId: get_store
+      responses:
+        '200':
+          description: Success
+      tags:
+      - store
+    parameters:
+    - in: path
+      name: id
+      required: true
+      type: integer
+  /stores:
+    get:
+      operationId: Get all the Stores
+      responses:
+        '200':
+          description: Success
+      tags:
+      - stores
+    post:
+      operationId: Create a Store
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Store'
+      responses:
+        '200':
+          description: Success
+      tags:
+      - stores
+produces:
+- application/json
+responses:
+  MaskError:
+    description: When any error occurs on mask
+  ParseError:
+    description: When a mask can't be parsed
+  ValidationError: {}
+securityDefinitions:
+  basic:
+    in: header
+    name: X-API-KEY
+    type: basic
+    x-basicInfoFunc: app.basic_auth
+swagger: '2.0'
+tags:
+- description: Item related operations
+  name: item
+- description: Items related operations
+  name: items
+- description: Store related operations
+  name: store
+- description: Stores related operations
+  name: stores
+- description: Generale file format yaml
+  name: export_yaml
